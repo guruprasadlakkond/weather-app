@@ -2,17 +2,9 @@ import React from 'react';
 import './App.css';
 import Weather from './components/Weather';
 import weatherapi from './services/weatherapi';
-import cityList from './city.list.json';
+import cityList from './city.json';
 
 class App extends React.Component {
-  cityObjList = {};
-  componentWillMount() {
-    this.cityObjList = cityList.reduce((a, cv) => {
-      a[cv.id] = cv.id;
-      return a;
-    }, {});
-  }
-
   componentDidMount() {
     setInterval(async () => {
       const prms = this.state.selectedCities.map((id) => {
@@ -38,12 +30,11 @@ class App extends React.Component {
   onChange = (e) => {
     e.preventDefault();
 
-    this.setState({ name: e.target.value + Date.now() });
     if (!Number.isInteger(parseInt(e.target.value))) {
       return;
     }
 
-    if (!this.cityObjList[e.target.value]) {
+    if (!cityList[e.target.value]) {
       this.setState({ error: 'Invalid City id' });
       return;
     }
