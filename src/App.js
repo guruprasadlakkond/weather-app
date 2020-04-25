@@ -12,6 +12,9 @@ class App extends React.Component {
       });
       const weatherRpts = await Promise.all(prms);
       const citiesData = weatherRpts.reduce((a, cv, ci) => {
+        if (cv.error) {
+          return a;
+        }
         a[cv.id] = cv;
         return a;
       }, {});

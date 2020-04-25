@@ -9,5 +9,7 @@ export default function getWeatherDetails(cityId) {
     .then((response) => {
       return response.data;
     })
-    .catch((e) => console.log(e));
+    .catch((e) => ({
+      error: e.message,
+    }));
 }
