@@ -2,9 +2,17 @@ import React from 'react';
 import './App.css';
 import Weather from './components/Weather';
 import weatherapi from './services/weatherapi';
+import cityList from './city.list.json';
 
-//http://openweathermap.org/img/wn/01d@2x.png
 class App extends React.Component {
+  cityObjList = {};
+  componentWillMount() {
+    this.cityObjList = cityList.reduce((a, cv) => {
+      a[cv.id] = cv.id;
+      return a;
+    }, {});
+  }
+
   componentDidMount() {
     setInterval(async () => {
       const prms = this.state.selectedCities.map((id) => {
@@ -24,17 +32,31 @@ class App extends React.Component {
     selectedCities: [5391811, 5128638, 4435652],
     citiesData: {},
     name: '',
+    error: '',
   };
 
   onChange = (e) => {
     e.preventDefault();
+
+    this.setState({ name: e.target.value + Date.now() });
+    if (!Number.isInteger(parseInt(e.target.value))) {
+      return;
+    }
+
+    if (!this.cityObjList[e.target.value]) {
+      this.setState({ error: 'Invalid City id' });
+      return;
+    }
 
     const cId = e.target.value;
     const matches = this.state.selectedCities.some((id) => {
       return id === e.target.value;
     });
     if (!matches) {
-      this.setState({ selectedCities: [...this.state.selectedCities, cId] });
+      this.setState({
+        selectedCities: [...this.state.selectedCities, cId],
+        error: '',
+      });
     }
   };
 
@@ -45,6 +67,15 @@ class App extends React.Component {
   }
 
   render() {
+    // console.log(cityList);
+
+    /* const cityObj = cityList.reduce((a, cv) => {
+      console.log(cv.id);
+      a[cv.id] = cv;
+      return a;
+    }, {});
+    console.log(cityObj); */
+    console.log(this.state);
     return (
       <div>
         <header>
@@ -53,8 +84,10 @@ class App extends React.Component {
             id="cityId"
             type="text"
             onBlur={this.onChange}
+            // onKeyPress={(event) => event.charCode >= 48 && event.charCode <= 57}
             placeholder="Enter city Id"
           />
+          <h4>{this.state.error && this.state.error}</h4>
           {this.renderCities()}
         </header>
       </div>

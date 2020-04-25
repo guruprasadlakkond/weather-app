@@ -10,11 +10,23 @@ export default class Weather extends React.Component {
       <div>
         <hr />
         <h1>{this.props.city.name}</h1>
-        <span>{this.props.city.weather[0].main}</span>
+        {this.props.city.weather[0].main}
+        <img
+          src={`http://openweathermap.org/img/wn/${this.props.city.weather[0].icon}@2x.png`}
+          alt=""
+        />
         <div>
-          {this.getTemperature(this.props.city.main.temp)}
-          H: {this.getTemperature(this.props.city.main.temp_max)}
-          L: {this.getTemperature(this.props.city.main.temp_min)}
+          <h3>
+            {this.getTemperature(this.props.city.main.temp)}
+            <i>&deg;</i>
+          </h3>
+          <span>
+            H: {this.getTemperature(this.props.city.main.temp_max)}&deg;{' '}
+          </span>
+          <span>
+            L:
+            {this.getTemperature(this.props.city.main.temp_min)}&deg;
+          </span>
         </div>
       </div>
     );
