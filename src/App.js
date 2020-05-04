@@ -20,8 +20,6 @@ class App extends React.Component {
       }, {});
       this.setState({ citiesData });
     }, 5000);
-
-    weatherapi(833);
   }
   state = {
     selectedCities: [5391811, 5128638, 4435652],
